@@ -1,6 +1,6 @@
 package com.example.auth_service.services;
 
-import com.example.auth_service.dtos.LonginRequest;
+import com.example.auth_service.dtos.LoginRequest;
 import com.example.auth_service.dtos.LoginResponse;
 import com.example.auth_service.dtos.RegisterRequest;
 import com.example.auth_service.models.User;
@@ -33,7 +33,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public LoginResponse login(LonginRequest request) {
+    public LoginResponse login(LoginRequest request) {
         // ao fazer o request de login ele busca no banco pra ver se o user ja existe.
         // se nao existir ele lança uma exception.
         User user = userRepository.findByEmail(request.email())
