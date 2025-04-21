@@ -2,6 +2,7 @@ package com.example.auth_service.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 
+//aqui um dto pra lidar com o request de login.
 public record LonginRequest(
     @NotBlank(message = "Email is required")
     String email,

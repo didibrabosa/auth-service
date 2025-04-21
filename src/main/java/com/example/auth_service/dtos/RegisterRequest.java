@@ -4,7 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-// simplesmente o 'record é uma classe de dados imutáveis
+// simplesmente o 'record é uma classe de dados imutáveis.
+// um data transfer object que lida com o registro do usuario.
 public record RegisterRequest (
     @NotBlank(message = "Email is required")
     @Email(message = "Email shold be valid")
