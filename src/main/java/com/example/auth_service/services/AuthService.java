@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     // dependencias da classe, usando o 'final', pois não podem ser alteradas.
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // lib responsável por criptografar as passwords.
+    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
     // injeção de dependencias usando construtor.
