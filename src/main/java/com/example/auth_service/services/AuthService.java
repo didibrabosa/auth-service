@@ -24,6 +24,10 @@ public class AuthService {
     }
 
     public User register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.email())) {
+            throw new RuntimeException("Email already exists");
+        }
+
         // metodo responsavel por registrar um novo user.
         User user = new User();
         user.setEmail(request.email());
