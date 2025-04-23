@@ -1,9 +1,9 @@
-version: '3.8'
-
 services:
   mongodb:
     image: mongo:latest
     container_name: auth_mongodb
+    networks:
+      - user_network
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
@@ -14,3 +14,7 @@ services:
 
 volumes:
   mongodb_data:
+
+networks:
+  user_network:
+    external: true  
