@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // desabilitando a proteção csrf.
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("api/auth/**").permitAll() // acessivel sem auth.
+                .requestMatchers("auth/**").permitAll() // acessivel sem auth.
                 .requestMatchers("api/health").permitAll() 
                 .anyRequest().authenticated() // todas os outros endpoints necessitam do auth.
             );
