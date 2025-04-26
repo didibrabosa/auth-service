@@ -3,6 +3,7 @@ package com.example.auth_service.services;
 import com.example.auth_service.dtos.LoginRequest;
 import com.example.auth_service.dtos.LoginResponse;
 import com.example.auth_service.dtos.RegisterRequest;
+import com.example.auth_service.dtos.UserServiceRequest;
 import com.example.auth_service.models.User;
 import com.example.auth_service.repositories.UserRepository;
 import com.example.auth_service.clients.UserServiceClient;
@@ -38,14 +39,14 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.password())); //criptografa a senha antes de salvar no banco.
 
         // apos ser criado ele salva no banco e retorna o user criado.
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         // chama o user-service para salvar o novo user registrado.
         userServiceClient.createUserProfile(
-            new RegisterRequest(user.getId(), request.email())
+            new UserServiceRequest(savedUser.getId(), savedUser.getEmail())
         );
 
-        return user;
+        return savedUser;
     }
 
     public LoginResponse login(LoginRequest request) {
