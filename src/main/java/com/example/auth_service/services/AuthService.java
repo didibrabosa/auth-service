@@ -5,6 +5,7 @@ import com.example.auth_service.dtos.LoginResponse;
 import com.example.auth_service.dtos.RegisterRequest;
 import com.example.auth_service.models.User;
 import com.example.auth_service.repositories.UserRepository;
+import com.example.auth_service.clients.UserServiceClient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,16 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserServiceClient userServiceClient;
 
     // injeção de dependencias usando construtor.
     public AuthService(UserRepository userRepository,
-    PasswordEncoder passwordEncoder, JwtService jwtService) {
+    PasswordEncoder passwordEncoder, JwtService jwtService,
+    UserServiceClient userServiceClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userServiceClient = userServiceClient;
     }
 
     public User register(RegisterRequest request) {
@@ -34,7 +38,12 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.password())); //criptografa a senha antes de salvar no banco.
 
         // apos ser criado ele salva no banco e retorna o user criado.
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        // chama o user-service para salvar o novo user registrado.
+        userServiceClient.createUserProfile(user.getId(), request.email());
+
+        return user;
     }
 
     public LoginResponse login(LoginRequest request) {
