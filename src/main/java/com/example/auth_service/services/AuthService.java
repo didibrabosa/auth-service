@@ -41,7 +41,9 @@ public class AuthService {
         userRepository.save(user);
 
         // chama o user-service para salvar o novo user registrado.
-        userServiceClient.createUserProfile(user.getId(), request.email());
+        userServiceClient.createUserProfile(
+            new RegisterRequest(user.getId(), request.email())
+        );
 
         return user;
     }
