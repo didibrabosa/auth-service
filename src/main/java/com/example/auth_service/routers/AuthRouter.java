@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class AuthRouter {
     
     private final AuthService authService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthRouter.class);
 
     public AuthRouter(AuthService authService) {
         this.authService = authService;
@@ -26,13 +29,33 @@ public class AuthRouter {
     public ResponseEntity<User> register(
         @Valid @RequestBody RegisterRequest request
     ) {
-        return ResponseEntity.ok(authService.register(request));
+        logger.info("Register request received for email: {}", request.email());
+        
+        try {
+            User registeredUser = authService.register(request);
+            logger.info("Register completed successfully for email: {}", request.email());
+            return ResponseEntity.ok(registeredUser);
+            
+        } catch (Exception ex) {
+            logger.error("Register failed for email {}: {}", request.email(), ex.getMessage());
+            throw ex;
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
         @Valid @RequestBody LoginRequest request
     ) {
-        return ResponseEntity.ok(authService.login(request));
+        logger.info("Login request received for email: {}", request.email());
+        
+        try {
+            LoginResponse response = authService.login(request);
+            logger.info("Login successful for email: {}", request.email());
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception ex) {
+            logger.warn("Login failed for email {}: {}", request.email(), ex.getMessage());
+            throw ex;
+        }
     }
 }
