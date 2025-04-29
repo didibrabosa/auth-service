@@ -25,10 +25,6 @@ public class JwtService {
     // metodo pra criar o token jwt à partir do email.
     public String generateToken(String email) {
         logger.debug("Generating JWT token for: {}", email);
-        if (email == null || email.isBlank()) {
-            logger.error("Email cannot be empty");
-        }
-        
         try {
          String token = Jwts.builder() // construtor do jwt.
             .setSubject(email) // usa o email com identificador.
